@@ -1,20 +1,27 @@
 package com.eggon.androidd.androidarchitecturetest.database
 
-import android.content.Context
-import io.realm.Realm
-import io.realm.RealmConfiguration
+import android.arch.persistence.room.Database
+import android.arch.persistence.room.RoomDatabase
+import com.eggon.androidd.androidarchitecturetest.database.dao.WeatherDao
+import com.eggon.androidd.androidarchitecturetest.model.Weather
 
-class AppDatabase {
+@Database(entities = [(Weather::class)], version = 1)
+abstract class AppDatabase : RoomDatabase() {
 
-    companion object {
-        fun buildDatabase(context: Context, name: String) {
-            Realm.init(context)
-            Realm.setDefaultConfiguration(RealmConfiguration.Builder()
-                    .name(name)
-                    .deleteRealmIfMigrationNeeded()
-                    .build())
-        }
+    abstract fun weatherDao(): WeatherDao
 
-        fun getDatabase(): Realm = Realm.getDefaultInstance()
-    }
+//    companion object {
+//
+//        @Volatile private var INSTANCE: AppDatabase? = null
+//
+//        fun getInstance(context: Context): AppDatabase =
+//                INSTANCE ?: synchronized(this) {
+//                    INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
+//                }
+//
+//        private fun buildDatabase(context: Context) =
+//                Room.databaseBuilder(context.applicationContext,
+//                        AppDatabase::class.java, "Sample.db")
+//                        .build()
+//    }
 }

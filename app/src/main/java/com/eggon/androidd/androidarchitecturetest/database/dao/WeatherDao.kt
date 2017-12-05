@@ -1,21 +1,22 @@
 package com.eggon.androidd.androidarchitecturetest.database.dao
 
-import co.eggon.eggoid.extension.error
-import co.eggon.eggoid.extension.safeExec
+import android.arch.lifecycle.LiveData
+import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Delete
+import android.arch.persistence.room.Insert
+import android.arch.persistence.room.OnConflictStrategy.REPLACE
+import android.arch.persistence.room.Query
 import com.eggon.androidd.androidarchitecturetest.model.Weather
-import com.eggon.androidd.androidarchitecturetest.util.RealmLiveData
-import com.eggon.androidd.androidarchitecturetest.util.asLiveData
-import io.realm.Realm
 
-class WeatherDao(private val realm: Realm) {
+@Dao
+interface WeatherDao {
 
-    fun loadData(): RealmLiveData<Weather>? = realm.where(Weather::class.java).findAll().asLiveData()
+    @Query("SELECT * FROM WEATHER")
+    fun getData(): LiveData<Weather>
 
-    fun insertWeather(w: Weather) {
-        realm.safeExec {
-            it.copyToRealmOrUpdate(w)
-        } onError {
-            it.error("insert error")
-        }
-    }
+    @Insert(onConflict = REPLACE)
+    fun insertData(w: Weather)
+
+    @Delete
+    fun removeData(w: Weather)
 }
