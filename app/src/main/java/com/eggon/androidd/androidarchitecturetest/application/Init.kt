@@ -3,19 +3,21 @@ package com.eggon.androidd.androidarchitecturetest.application
 import android.app.Application
 import co.eggon.eggoid.ServiceFactory
 import com.eggon.androidd.androidarchitecturetest.database.AppDatabase
-import com.eggon.androidd.androidarchitecturetest.database.DatabaseHolder
 import retrofit2.converter.gson.GsonConverterFactory
 
 
 class Init : Application() {
 
-    private lateinit var db: AppDatabase
-
     override fun onCreate() {
         super.onCreate()
 
-        DatabaseHolder().init(this)
+        AppDatabase.createDatabase(this)
         initServiceFactory()
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        AppDatabase.destroyDatabase()
     }
 
     private fun initServiceFactory() {

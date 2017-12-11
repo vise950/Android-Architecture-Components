@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import co.eggon.eggoid.extension.error
+import com.eggon.androidd.androidarchitecturetest.viewModel.ViewModelFactory
 import com.eggon.androidd.androidarchitecturetest.viewModel.WeatherViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -15,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var pd: ProgressDialog
 
     private lateinit var viewModel: WeatherViewModel
+    private val viewModelFactory by lazy { ViewModelFactory(application) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +24,9 @@ class MainActivity : AppCompatActivity() {
 
         pd = ProgressDialog(this)
 
-        viewModel = ViewModelProviders.of(this).get(WeatherViewModel::class.java)
+//        getDatabasePath("Sample.db").absoluteFile.error("db path")
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(WeatherViewModel::class.java)
 
         observeData()
         load_btn.setOnClickListener {

@@ -6,6 +6,5 @@ import com.eggon.androidd.androidarchitecturetest.network.DataRequest
 
 
 class WeatherRepository {
-
     fun loadData(): LiveData<ApiResponse> = DataRequest(37.8267, -122.4233).getData()
 }
