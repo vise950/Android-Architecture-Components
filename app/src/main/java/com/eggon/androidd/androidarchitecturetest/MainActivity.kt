@@ -6,9 +6,11 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import co.eggon.eggoid.extension.error
+import com.eggon.androidd.androidarchitecturetest.application.Init
 import com.eggon.androidd.androidarchitecturetest.viewModel.ViewModelFactory
 import com.eggon.androidd.androidarchitecturetest.viewModel.WeatherViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
@@ -16,32 +18,32 @@ class MainActivity : AppCompatActivity() {
     private lateinit var pd: ProgressDialog
 
     private lateinit var viewModel: WeatherViewModel
-    private val viewModelFactory by lazy { ViewModelFactory(application) }
+    @Inject lateinit var viewModelFactory: ViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        pd = ProgressDialog(this)
+        (application as Init).appComponent.inject(this)
 
-//        getDatabasePath("Sample.db").absoluteFile.error("db path")
+        pd = ProgressDialog(this)
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(WeatherViewModel::class.java)
 
         observeData()
         load_btn.setOnClickListener {
             pd.show()
-            viewModel.loadWeather()
+            viewModel.updateWeather(latitude.text.toString().toDouble(), longitude.text.toString().toDouble())
         }
     }
 
     private fun observeData() {
+        "observe data".error()
         viewModel.getWeather()?.observe(this, Observer {
             pd.dismiss()
             it?.let {
-                it.getData()?.let { handleResponse(it.toString()) }
-                it.getError()?.let { handleResponse(it.toString()) }
-            }?.run {
+                handleResponse(it.toString())
+            } ?: run {
                 "data null".error()
             }
         })

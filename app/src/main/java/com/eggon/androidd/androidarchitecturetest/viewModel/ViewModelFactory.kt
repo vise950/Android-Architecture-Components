@@ -1,11 +1,14 @@
 package com.eggon.androidd.androidarchitecturetest.viewModel
 
-import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.eggon.androidd.androidarchitecturetest.repository.WeatherRepository
+import javax.inject.Inject
 
 
-class ViewModelFactory(private val app: Application) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory @Inject constructor(val repo: WeatherRepository) : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel> create(modelClass: Class<T>): T = WeatherViewModel(app) as T
+    //todo generic factory
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = WeatherViewModel(repo) as T
 }

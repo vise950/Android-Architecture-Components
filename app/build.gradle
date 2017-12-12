@@ -52,7 +52,11 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
 
     // Eggoid
-    compile 'com.github.coletz:eggoid:1.8.1'
+    compile 'com.github.coletz:eggoid:1.8.2'
+
+    implementation 'com.google.dagger:dagger:2.13'
+    kapt 'com.google.dagger:dagger-compiler:2.13'
+    provided 'javax.annotation:jsr250-api:1.0'
 
     testImplementation 'junit:junit:4.12'
     kapt 'com.android.support.test:runner:1.0.1'
