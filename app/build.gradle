@@ -54,7 +54,13 @@ dependencies {
     provided 'javax.annotation:jsr250-api:1.0'
 
     // Test
+    testImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
     testImplementation 'junit:junit:4.12'
     kapt 'com.android.support.test:runner:1.0.1'
     kapt 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    testCompile 'org.jetbrains.kotlin:kotlin-stdlib:1.2.0'
+    testCompile 'org.jetbrains.kotlin:kotlin-test-junit:1.2.0'
 }

@@ -14,6 +14,7 @@ import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(private val context: Context) {
 
+//    @Inject lateinit var localRepo: WeatherLocalRepository
     private val localRepo = WeatherLocalRepository()
     private val remoteRepo = WeatherRemoteRepository()
 

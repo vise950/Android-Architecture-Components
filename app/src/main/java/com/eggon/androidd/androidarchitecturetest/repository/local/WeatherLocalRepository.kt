@@ -4,12 +4,10 @@ import android.arch.lifecycle.LiveData
 import com.eggon.androidd.androidarchitecturetest.database.AppDatabase
 import com.eggon.androidd.androidarchitecturetest.model.Weather
 
+//class WeatherLocalRepository @Inject constructor(val dao: WeatherDao) {
 class WeatherLocalRepository {
 
-    //todo dagger
-    //    @Inject lateinit var dao: WeatherDao
-
-    var dao = AppDatabase.getDatabase().weatherDao()
+    private val dao = AppDatabase.getDatabase().weatherDao()
 
     fun getData(): LiveData<Weather>? = dao.getData()
 

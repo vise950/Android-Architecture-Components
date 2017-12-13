@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
             val lat = if (latitude.text.toString().isBlank()) null else latitude.text.toString().toDouble()
             val lng = if (longitude.text.toString().isBlank()) null else longitude.text.toString().toDouble()
-            
+
             Handler().postDelayed({
                 viewModel.updateWeather(lat, lng)
             }, 2000)
