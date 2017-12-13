@@ -7,7 +7,7 @@ import com.eggon.androidd.androidarchitecturetest.model.Weather
 import com.eggon.androidd.androidarchitecturetest.repository.WeatherRepository
 import javax.inject.Inject
 
-class WeatherViewModel @Inject constructor(val weatherRepository: WeatherRepository) : ViewModel() {
+class WeatherViewModel @Inject constructor(private val weatherRepository: WeatherRepository) : ViewModel() {
 
     private val data: MediatorLiveData<Weather>? = MediatorLiveData()
 

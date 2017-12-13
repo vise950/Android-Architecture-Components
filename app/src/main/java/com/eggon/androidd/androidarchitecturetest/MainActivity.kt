@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
-import co.eggon.eggoid.extension.error
 import com.eggon.androidd.androidarchitecturetest.application.Init
 import com.eggon.androidd.androidarchitecturetest.viewModel.ViewModelFactory
 import com.eggon.androidd.androidarchitecturetest.viewModel.WeatherViewModel
@@ -34,8 +33,10 @@ class MainActivity : AppCompatActivity() {
         observeData()
         load_btn.setOnClickListener {
             pd.show()
+
             val lat = if (latitude.text.toString().isBlank()) null else latitude.text.toString().toDouble()
             val lng = if (longitude.text.toString().isBlank()) null else longitude.text.toString().toDouble()
+            
             Handler().postDelayed({
                 viewModel.updateWeather(lat, lng)
             }, 2000)
@@ -43,14 +44,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        "observe data".error()
         viewModel.getWeather()?.observe(this, Observer {
             pd.dismiss()
-            it?.let {
-                handleResponse(it.toString())
-            } ?: run {
-                "data null".error()
-            }
+            handleResponse(it.toString())
         })
     }
 

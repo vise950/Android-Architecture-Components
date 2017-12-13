@@ -1,4 +1,4 @@
-package com.eggon.androidd.androidarchitecturetest.dagger
+package com.eggon.androidd.androidarchitecturetest.dagger.module
 
 import android.app.Application
 import android.content.Context

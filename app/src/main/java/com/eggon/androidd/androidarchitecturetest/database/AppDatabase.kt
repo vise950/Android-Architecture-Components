@@ -12,16 +12,13 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun weatherDao(): WeatherDao
 
+    //todo dagger
     companion object {
 
-        @Volatile private var INSTANCE: AppDatabase? = null
+        lateinit var INSTANCE: AppDatabase
 
         fun createDatabase(context: Context) {
-            INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
-        }
-
-        fun closeDatabase() {
-            INSTANCE = null
+            buildDatabase(context).also { INSTANCE = it }
         }
 
         private fun buildDatabase(context: Context) =
@@ -29,6 +26,6 @@ abstract class AppDatabase : RoomDatabase() {
                         .fallbackToDestructiveMigration()
                         .build()
 
-        fun getDatabase(): AppDatabase? = INSTANCE
+        fun getDatabase(): AppDatabase = INSTANCE
     }
 }

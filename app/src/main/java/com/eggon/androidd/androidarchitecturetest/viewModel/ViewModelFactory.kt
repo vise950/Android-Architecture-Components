@@ -6,9 +6,6 @@ import com.eggon.androidd.androidarchitecturetest.repository.WeatherRepository
 import javax.inject.Inject
 
 
-class ViewModelFactory @Inject constructor(val repo: WeatherRepository) : ViewModelProvider.Factory {
-
-    //todo generic factory
-
+class ViewModelFactory @Inject constructor(private val repo: WeatherRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T = WeatherViewModel(repo) as T
 }
