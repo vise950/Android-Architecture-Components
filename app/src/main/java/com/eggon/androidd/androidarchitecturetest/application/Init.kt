@@ -24,7 +24,7 @@ class Init : Application() {
 
     override fun onTerminate() {
         super.onTerminate()
-        AppDatabase.destroyDatabase()
+        AppDatabase.closeDatabase()
     }
 
     private fun initServiceFactory() {

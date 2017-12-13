@@ -7,7 +7,8 @@ import co.eggon.eggoid.extension.isConnectionAvailable
 import com.eggon.androidd.androidarchitecturetest.model.Weather
 import com.eggon.androidd.androidarchitecturetest.repository.local.WeatherLocalRepository
 import com.eggon.androidd.androidarchitecturetest.repository.remote.WeatherRemoteRepository
-import kotlinx.coroutines.experimental.async
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
@@ -16,12 +17,12 @@ class WeatherRepository @Inject constructor(private val context: Context) {
     private val localRepo = WeatherLocalRepository()
     private val remoteRepo = WeatherRemoteRepository()
 
-    fun getWeather(lat: Double, lng: Double): LiveData<Weather>? {
+    fun getWeather(lat: Double?, lng: Double?): LiveData<Weather>? {
         if (context.isConnectionAvailable()) {
             remoteRepo.getData(lat, lng, {
-                async {
-                    localRepo.saveData(it)
-                }
+                Observable.just(it)
+                        .subscribeOn(Schedulers.io())
+                        .subscribe { localRepo.saveData(it) }
             }, {
                 it.error()
             })

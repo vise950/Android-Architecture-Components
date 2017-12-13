@@ -11,7 +11,7 @@ class WeatherViewModel @Inject constructor(val weatherRepository: WeatherReposit
 
     private val data: MediatorLiveData<Weather>? = MediatorLiveData()
 
-    fun updateWeather(lat: Double, lng: Double) {
+    fun updateWeather(lat: Double?, lng: Double?) {
         weatherRepository.getWeather(lat, lng)?.let {
             data?.addSource(it, { data.value = it })
         }

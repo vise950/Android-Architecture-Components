@@ -8,9 +8,9 @@ import com.eggon.androidd.androidarchitecturetest.retofit.WebService
 
 class WeatherRemoteRepository {
 
-    fun getData(lat: Double, lng: Double, onDataReady: (Weather) -> Unit, onError: (Throwable) -> Unit) {
+    fun getData(lat: Double?, lng: Double?, onDataReady: (Weather) -> Unit, onError: (Throwable) -> Unit) {
         ServiceFactory().with(WebService::class)
-                .getWeather(lat, lng)
+                .getWeather(lat ?: 0.0, lng ?: 0.0)
                 .network({
                     onDataReady.invoke(it)
                 }, {

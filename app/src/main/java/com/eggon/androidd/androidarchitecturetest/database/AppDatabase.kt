@@ -20,12 +20,13 @@ abstract class AppDatabase : RoomDatabase() {
             INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
         }
 
-        fun destroyDatabase() {
+        fun closeDatabase() {
             INSTANCE = null
         }
 
         private fun buildDatabase(context: Context) =
-                Room.databaseBuilder(context, AppDatabase::class.java, "Sample.db")
+                Room.databaseBuilder(context, AppDatabase::class.java, "my_database")
+                        .fallbackToDestructiveMigration()
                         .build()
 
         fun getDatabase(): AppDatabase? = INSTANCE
