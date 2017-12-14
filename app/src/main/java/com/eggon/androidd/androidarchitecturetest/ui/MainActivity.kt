@@ -1,4 +1,4 @@
-package com.eggon.androidd.androidarchitecturetest
+package com.eggon.androidd.androidarchitecturetest.ui
 
 import android.app.ProgressDialog
 import android.arch.lifecycle.Observer
@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
+import com.eggon.androidd.androidarchitecturetest.R
 import com.eggon.androidd.androidarchitecturetest.application.Init
 import com.eggon.androidd.androidarchitecturetest.viewModel.ViewModelFactory
 import com.eggon.androidd.androidarchitecturetest.viewModel.WeatherViewModel

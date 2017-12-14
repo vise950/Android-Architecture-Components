@@ -1,6 +1,6 @@
 package com.eggon.androidd.androidarchitecturetest.dagger.component
 
-import com.eggon.androidd.androidarchitecturetest.MainActivity
+import com.eggon.androidd.androidarchitecturetest.ui.MainActivity
 import com.eggon.androidd.androidarchitecturetest.dagger.module.AppModule
 import com.eggon.androidd.androidarchitecturetest.dagger.module.DatabaseModule
 import dagger.Component
