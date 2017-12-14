@@ -4,13 +4,12 @@ import android.arch.persistence.room.Room
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import com.eggon.androidd.androidarchitecturetest.LiveDataTestUtil
-import com.eggon.androidd.androidarchitecturetest.database.dao.WeatherDao
 import com.eggon.androidd.androidarchitecturetest.database.TestData.Companion.WEATHER_ENTITY
+import com.eggon.androidd.androidarchitecturetest.database.dao.WeatherDao
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-
 
 @RunWith(AndroidJUnit4::class)
 class WeatherDaoTest {

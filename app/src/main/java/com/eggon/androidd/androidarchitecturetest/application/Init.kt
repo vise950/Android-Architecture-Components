@@ -18,9 +18,6 @@ class Init : Application() {
 
         initDagger()
         initServiceFactory()
-
-        //todo dagger
-        AppDatabase.createDatabase(this)
     }
 
     private fun initServiceFactory() {

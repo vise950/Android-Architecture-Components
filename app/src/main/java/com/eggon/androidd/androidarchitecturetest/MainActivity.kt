@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     private fun observeData() {
         viewModel.getWeather()?.observe(this, Observer {
             pd.dismiss()
-            handleResponse(it.toString())
+            it?.let { handleResponse(it.toString()) }
         })
     }
 

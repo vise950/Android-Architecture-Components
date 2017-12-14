@@ -11,21 +11,4 @@ import com.eggon.androidd.androidarchitecturetest.model.Weather
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun weatherDao(): WeatherDao
-
-    //todo dagger
-    companion object {
-
-        lateinit var INSTANCE: AppDatabase
-
-        fun createDatabase(context: Context) {
-            buildDatabase(context).also { INSTANCE = it }
-        }
-
-        private fun buildDatabase(context: Context) =
-                Room.databaseBuilder(context, AppDatabase::class.java, "my_database")
-                        .fallbackToDestructiveMigration()
-                        .build()
-
-        fun getDatabase(): AppDatabase = INSTANCE
-    }
 }
