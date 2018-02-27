@@ -4,10 +4,10 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import com.eggon.androidd.androidarchitecturetest.R
 import com.eggon.androidd.androidarchitecturetest.application.Init
 import com.eggon.androidd.androidarchitecturetest.repository.WeatherRepository
+import com.eggon.androidd.androidarchitecturetest.util.BaseActivity
 import com.eggon.androidd.androidarchitecturetest.util.Utils
 import com.eggon.androidd.androidarchitecturetest.util.hideKeyboard
 import com.eggon.androidd.androidarchitecturetest.viewModel.WeatherViewModel
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var viewModel: WeatherViewModel
 
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         (application as Init).appComponent.inject(this)
 
-        viewModel = this.viewModel { WeatherViewModel(repo, null) }
+        viewModel = this.viewModel { WeatherViewModel(repo, disposables, null) }
 
         snackbar = Utils.makeSnackbar(this, root_layout)
 

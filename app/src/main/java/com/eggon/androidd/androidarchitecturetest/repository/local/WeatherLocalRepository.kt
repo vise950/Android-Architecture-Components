@@ -5,6 +5,6 @@ import com.eggon.androidd.androidarchitecturetest.database.dao.WeatherDao
 import com.eggon.androidd.androidarchitecturetest.model.Weather
 import javax.inject.Inject
 
-class WeatherLocalRepository @Inject constructor(val dao: WeatherDao) {
+class WeatherLocalRepository @Inject constructor(private val dao: WeatherDao) {
     fun getData(): LiveData<Weather> = dao.getData()
 }

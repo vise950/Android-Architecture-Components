@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
 @Entity()
-class Weather(
+data class Weather(
         @PrimaryKey
         var weatherId: Long = 0,
         var latitude: Double? = null,
