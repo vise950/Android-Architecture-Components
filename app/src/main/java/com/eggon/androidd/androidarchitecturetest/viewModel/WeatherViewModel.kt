@@ -3,25 +3,22 @@ package com.eggon.androidd.androidarchitecturetest.viewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.ViewModel
-import android.content.Context
 import com.eggon.androidd.androidarchitecturetest.model.Weather
 import com.eggon.androidd.androidarchitecturetest.repository.WeatherRepository
-import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
-class WeatherViewModel(context: Context, private val disposable: CompositeDisposable) : ViewModel() {
-
-    private val weatherRepo = WeatherRepository(context)
+class WeatherViewModel @Inject constructor(private val weatherRepository: WeatherRepository,
+                                           coordinates: Pair<Double, Double>?) : ViewModel() {
 
     private val data: MediatorLiveData<Weather>? = MediatorLiveData()
 
     init {
-        data?.addSource(weatherRepo.getLastData(), {
-            it?.let { data.value = it }
-        })
+        data?.addSource(weatherRepository.getWeather(coordinates?.first, coordinates?.second),
+                { data.value = it })
     }
 
-    fun updateWeather(lat: Double?, lng: Double?) {
-        weatherRepo.getWeather(disposable, lat, lng)
+    fun updateWeather(coordinates: Pair<Double?, Double?>) {
+        weatherRepository.getWeather(coordinates.first, coordinates.second)
     }
 
     fun getWeather(): LiveData<Weather>? = data
