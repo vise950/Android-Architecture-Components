@@ -2,36 +2,34 @@ package com.eggon.androidd.androidarchitecturetest.ui
 
 import android.app.ProgressDialog
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.app.AppCompatActivity
-import com.eggon.androidd.androidarchitecturetest.R
-import com.eggon.androidd.androidarchitecturetest.application.Init
-import com.eggon.androidd.androidarchitecturetest.viewModel.ViewModelFactory
+import co.eggon.eggoid.extension.error
+import com.eggon.androidd.androidarchitecturetest.model.Weather
+import com.eggon.androidd.androidarchitecturetest.util.BaseActivity
 import com.eggon.androidd.androidarchitecturetest.viewModel.WeatherViewModel
+import com.eggon.androidd.androidarchitecturetest.viewModel.viewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var pd: ProgressDialog
 
     private lateinit var viewModel: WeatherViewModel
-    @Inject lateinit var viewModelFactory: ViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        (application as Init).appComponent.inject(this)
-
         pd = ProgressDialog(this)
 
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(WeatherViewModel::class.java)
+        viewModel = this.viewModel { WeatherViewModel(this, disposables) }
 
         observeData()
+
+        val w = Weather()
+
         load_btn.setOnClickListener {
             pd.show()
 
@@ -46,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeData() {
         viewModel.getWeather()?.observe(this, Observer {
+            "observe data".error()
             pd.dismiss()
             it?.let { handleResponse(it.toString()) }
         })

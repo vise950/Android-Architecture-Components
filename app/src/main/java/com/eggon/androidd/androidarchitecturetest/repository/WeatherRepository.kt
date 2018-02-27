@@ -2,26 +2,27 @@ package com.eggon.androidd.androidarchitecturetest.repository
 
 import android.arch.lifecycle.LiveData
 import android.content.Context
-import co.eggon.eggoid.extension.error
 import co.eggon.eggoid.extension.isConnectionAvailable
-import com.eggon.androidd.androidarchitecturetest.database.dao.WeatherDao
+import com.eggon.androidd.androidarchitecturetest.database.AppDatabase
 import com.eggon.androidd.androidarchitecturetest.model.Weather
 import com.eggon.androidd.androidarchitecturetest.repository.local.WeatherLocalRepository
 import com.eggon.androidd.androidarchitecturetest.repository.remote.WeatherRemoteRepository
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
+import io.reactivex.disposables.CompositeDisposable
 
 
-class WeatherRepository @Inject constructor(private val context: Context, private val localRepo: WeatherLocalRepository,
-                                            private val remoteRepo: WeatherRemoteRepository) {
+class WeatherRepository(private val context: Context) {
 
-    fun getWeather(lat: Double?, lng: Double?): LiveData<Weather>? {
+    private val db = AppDatabase.getDatabase(context)
+
+    private val localRepo = WeatherLocalRepository(db)
+    private val remoteRepo = WeatherRemoteRepository(db)
+
+    fun getWeather(disposable: CompositeDisposable, lat: Double?, lng: Double?): LiveData<Weather>? {
         if (context.isConnectionAvailable()) {
-            remoteRepo.getData(lat, lng, {
-                it.error()
-            })
+            remoteRepo.getData(disposable, lat, lng)
         }
         return localRepo.getData()
     }
+
+    fun getLastData(): LiveData<Weather> = localRepo.getData()
 }

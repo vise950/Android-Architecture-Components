@@ -2,7 +2,6 @@ package com.eggon.androidd.androidarchitecturetest.database.dao
 
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
-import android.arch.persistence.room.OnConflictStrategy.REPLACE
 import com.eggon.androidd.androidarchitecturetest.model.Weather
 
 @Dao
@@ -14,10 +13,10 @@ interface WeatherDao {
     @Query("SELECT COUNT(*) FROM Weather")
     fun count(): Int
 
-    @Insert()
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertData(w: Weather)
 
-    @Update(onConflict = REPLACE)
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateData(w: Weather)
 
     @Delete
