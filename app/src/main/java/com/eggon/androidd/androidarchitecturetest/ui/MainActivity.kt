@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
+import co.eggon.eggoid.extension.error
 import com.eggon.androidd.androidarchitecturetest.R
 import com.eggon.androidd.androidarchitecturetest.application.Init
 import com.eggon.androidd.androidarchitecturetest.repository.WeatherRepository
@@ -35,6 +36,7 @@ class MainActivity : BaseActivity() {
 
         snackbar = Utils.makeSnackbar(this, root_layout)
 
+
         observeData()
         load_btn.setOnClickListener {
             this.hideKeyboard()
@@ -57,6 +59,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun handleResponse(response: String?) {
+        response.error("response")
         result_tv.text = response
     }
 }

@@ -5,6 +5,7 @@ import co.eggon.eggoid.ServiceFactory
 import com.eggon.androidd.androidarchitecturetest.dagger.component.AppComponent
 import com.eggon.androidd.androidarchitecturetest.dagger.component.DaggerAppComponent
 import com.eggon.androidd.androidarchitecturetest.dagger.module.AppModule
+import com.facebook.stetho.Stetho
 import retrofit2.converter.gson.GsonConverterFactory
 
 
@@ -14,6 +15,8 @@ class Init : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        Stetho.initializeWithDefaults(this)
 
         initDagger()
         initServiceFactory()

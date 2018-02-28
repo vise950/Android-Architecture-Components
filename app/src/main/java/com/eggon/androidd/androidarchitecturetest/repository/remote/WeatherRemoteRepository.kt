@@ -12,9 +12,9 @@ import javax.inject.Inject
 
 class WeatherRemoteRepository @Inject constructor(val dao: WeatherDao) {
 
-    fun getData(disposable: CompositeDisposable, lat: Double?, lng: Double?) {
+    fun getData(disposable: CompositeDisposable, lat: Double, lng: Double) {
         ServiceFactory().with(WebService::class)
-                .getWeather(lat ?: 0.0, lng ?: 0.0)
+                .getWeather(lat, lng)
                 .network(disposable, {
                     insertResultIntoDb(it)
                 }, {
@@ -22,9 +22,11 @@ class WeatherRemoteRepository @Inject constructor(val dao: WeatherDao) {
                 })
     }
 
-    private fun insertResultIntoDb(data: Weather) {
+    private fun insertResultIntoDb(weather: Weather) {
         doAsync {
-            dao.insertData(data)
+            weather.updateKeys()
+            dao.insertData(weather)
+            dao.insertDailyData(*weather.daily.data.toTypedArray())
         }
     }
 }
