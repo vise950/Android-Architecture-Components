@@ -8,5 +8,5 @@ import javax.inject.Inject
 
 class WeatherLocalRepository @Inject constructor(private val dao: WeatherDao) {
     fun getData(lat: Double, lng: Double): LiveData<Weather> = dao.getData(lat, lng)
-    fun getDailyData(weather: Weather): LiveData<List<DailyData>> = dao.getDailyData(weather.latitude, weather.longitude, weather.timestamp)
+    fun getDailyData(weather: Weather): LiveData<List<DailyData>> = dao.getDailyData(weather.latitude, weather.longitude)
 }

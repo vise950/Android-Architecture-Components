@@ -9,7 +9,6 @@ const val WEATHER_QUERY = """
 SELECT * FROM weather
 WHERE latitude = :lat
 AND longitude = :lng
-ORDER BY timestamp
 LIMIT 1
 """
 
@@ -17,7 +16,6 @@ const val DAILY_DATA_QUERY = """
 SELECT * FROM daily_data
 WHERE latitude = :lat
 AND longitude = :lng
-AND timestamp = :timestamp
 """
 
 @Dao
@@ -26,7 +24,7 @@ interface WeatherDao {
     fun getData(lat: Double, lng: Double): LiveData<Weather>
 
     @Query(DAILY_DATA_QUERY)
-    fun getDailyData(lat: Double, lng: Double, timestamp: Long): LiveData<List<DailyData>>
+    fun getDailyData(lat: Double, lng: Double): LiveData<List<DailyData>>
 
     @Query("SELECT COUNT(*) FROM weather")
     fun count(): Int
@@ -34,11 +32,8 @@ interface WeatherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertData(w: Weather)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateData(w: Weather)
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertDailyData(vararg w: DailyData)
+    fun insertDailyData(vararg d: DailyData)
 
     @Delete
     fun removeData(w: Weather)

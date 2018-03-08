@@ -10,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
-class WeatherRemoteRepository @Inject constructor(val dao: WeatherDao) {
+class WeatherRemoteRepository @Inject constructor(private val dao: WeatherDao) {
 
     fun getData(disposable: CompositeDisposable, lat: Double, lng: Double) {
         ServiceFactory().with(WebService::class)
@@ -26,6 +26,7 @@ class WeatherRemoteRepository @Inject constructor(val dao: WeatherDao) {
         doAsync {
             weather.updateKeys()
             dao.insertData(weather)
+            weather.toString().error()
             dao.insertDailyData(*weather.daily.data.toTypedArray())
         }
     }

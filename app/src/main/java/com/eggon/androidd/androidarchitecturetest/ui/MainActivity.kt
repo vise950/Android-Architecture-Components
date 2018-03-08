@@ -4,9 +4,9 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
-import co.eggon.eggoid.extension.error
 import com.eggon.androidd.androidarchitecturetest.R
 import com.eggon.androidd.androidarchitecturetest.application.Init
+import com.eggon.androidd.androidarchitecturetest.model.Weather
 import com.eggon.androidd.androidarchitecturetest.repository.WeatherRepository
 import com.eggon.androidd.androidarchitecturetest.util.BaseActivity
 import com.eggon.androidd.androidarchitecturetest.util.Utils
@@ -32,7 +32,7 @@ class MainActivity : BaseActivity() {
 
         (application as Init).appComponent.inject(this)
 
-        viewModel = this.viewModel { WeatherViewModel(repo, disposables, null) }
+        viewModel = this.viewModel { WeatherViewModel(repo, disposables) }
 
         snackbar = Utils.makeSnackbar(this, root_layout)
 
@@ -46,20 +46,33 @@ class MainActivity : BaseActivity() {
             val lng = if (longitude.text.toString().isBlank()) null else longitude.text.toString().toDouble()
 
             Handler().postDelayed({
-                viewModel.updateWeather(Pair(lat, lng))
+                if (lat != null && lng != null) {
+                    viewModel.updateWeather(Pair(lat, lng))
+                }
             }, 2000)
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        snackbar.dismiss()
+    }
+
     private fun observeData() {
-        viewModel.getWeather()?.observe(this, Observer {
+        viewModel.getWeather().observe(this, Observer {
             snackbar.dismiss()
-            it?.let { handleResponse(it.toString()) }
+            handleResponse(it)
         })
     }
 
-    private fun handleResponse(response: String?) {
-        response.error("response")
-        result_tv.text = response
+    private fun handleResponse(response: Weather?) {
+        val s = "latitude: ${response?.latitude}\n" +
+                "longitude: ${response?.longitude}\n" +
+                "currently time: ${response?.currently?.time}\n" +
+                "currently summary: ${response?.currently?.summary}\n" +
+                "currently temperature: ${response?.currently?.temperature}\n" +
+                "daily: ${response?.daily?.data.toString()}"
+
+//        result_tv.text = s
     }
 }
