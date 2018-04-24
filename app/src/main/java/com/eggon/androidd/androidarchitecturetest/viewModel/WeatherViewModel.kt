@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
-import co.eggon.eggoid.extension.error
 import com.eggon.androidd.androidarchitecturetest.model.Weather
 import com.eggon.androidd.androidarchitecturetest.repository.WeatherRepository
 import io.reactivex.disposables.CompositeDisposable
@@ -13,44 +12,34 @@ import javax.inject.Inject
 class WeatherViewModel @Inject constructor(private val weatherRepository: WeatherRepository,
                                            private val disposable: CompositeDisposable) : ViewModel() {
 
-    private val weatherData: MediatorLiveData<Weather> = MediatorLiveData()
+    val weatherData: MediatorLiveData<Weather> = MediatorLiveData()
 
     init {
-        weatherData.addSource(updateWeather(),
+        weatherData.addSource(getWeather(),
                 {
-                    it.error("data")
                     weatherData.value = it
                 })
     }
 
-    fun updateWeather(coordinates: Pair<Double, Double>? = null): LiveData<Weather> {
-//        return coordinates?.let {
-//            weatherRepository.getWeather(disposable, it.first, it.second).also {
-//                Transformations.switchMap(it, { data ->
-//                    weatherRepository.getDailyData(data).also {
-//                        Transformations.map(it, {
-//                            data.daily.data = it
-//                            data
-//                        })
-//                    }
-//                })
-//            }
-//        } ?: run { MediatorLiveData<Weather>() }
-
-        var weatherLiveData = weatherRepository.getWeather(disposable,
-                coordinates?.first ?: 0.0,
-                coordinates?.second ?: 0.0)
-        weatherLiveData = Transformations.switchMap(weatherLiveData, { weather ->
-            weather?.let {
-                val dailyData = weatherRepository.getDailyData(it)
-                Transformations.map(dailyData, {
-                    weather.daily.data = it
-                    weather
-                })
-            }
-        })
-        return weatherLiveData
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
     }
 
-    fun getWeather(): LiveData<Weather> = weatherData
+    fun updateWeather(coordinates: Pair<Double, Double>) {
+        weatherRepository.updateWeather(disposable, coordinates.first, coordinates.second)
+    }
+
+    private fun getWeather(coordinates: Pair<Double?, Double?>? = null): LiveData<Weather> {
+        return if (coordinates?.first != null && coordinates.second != null) {
+            Transformations.switchMap(weatherRepository.getData(coordinates.first!!, coordinates.second!!), { data ->
+                Transformations.map(weatherRepository.getDailyData(data), {
+                    data.daily.data = it
+                    data
+                })
+            })
+        } else {
+            MediatorLiveData()
+        }
+    }
 }

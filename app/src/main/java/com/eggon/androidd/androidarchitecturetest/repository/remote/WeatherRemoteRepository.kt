@@ -26,8 +26,8 @@ class WeatherRemoteRepository @Inject constructor(private val dao: WeatherDao) {
         doAsync {
             weather.updateKeys()
             dao.insertData(weather)
-            weather.toString().error()
             dao.insertDailyData(*weather.daily.data.toTypedArray())
+            "DATA INSERTED".error()
         }
     }
 }

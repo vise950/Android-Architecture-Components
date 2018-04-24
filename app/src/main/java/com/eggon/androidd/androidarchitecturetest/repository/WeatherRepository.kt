@@ -15,12 +15,12 @@ class WeatherRepository @Inject constructor(private val context: Context,
                                             private val localRepo: WeatherLocalRepository,
                                             private val remoteRepo: WeatherRemoteRepository) {
 
-    fun getWeather(disposable: CompositeDisposable, lat: Double, lng: Double): LiveData<Weather> {
+    fun updateWeather(disposable: CompositeDisposable, lat: Double, lng: Double) {
         if (context.isConnectionAvailable()) {
             remoteRepo.getData(disposable, lat, lng)
         }
-        return localRepo.getData(lat, lng)
     }
 
+    fun getData(lat: Double, lng: Double): LiveData<Weather> = localRepo.getData(lat, lng)
     fun getDailyData(weather: Weather): LiveData<List<DailyData>> = localRepo.getDailyData(weather)
 }
